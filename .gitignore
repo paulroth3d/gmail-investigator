@@ -1,0 +1,5 @@
+# ignore node modules
+node_modules
+
+# protect the clasp project
+.clasp.json
