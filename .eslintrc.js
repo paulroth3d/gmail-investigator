@@ -6,7 +6,9 @@ module.exports = {
         "browser": true,
         "commonjs": true,
         "es2021": true,
-        "node": true
+        "node": true,
+        "jest": true,
+        "googleappsscript/googleappsscript": true
     },
     "extends": "eslint:recommended",
     "overrides": [
@@ -26,5 +28,6 @@ module.exports = {
         "ecmaVersion": "latest"
     },
     "rules": {
+        'no-unused-vars': false
     }
-}
+};
