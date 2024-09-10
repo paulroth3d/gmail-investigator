@@ -28,8 +28,16 @@ function promptGmail() {
   }
 }
 
+// https://stackoverflow.com/questions/46096110/250-500-threads-limit-in-gmailapp-with-google-apps-script
+
 function queryGmail(query) {
-  var threads = GmailApp.search(query);//, 0, 999);
+    var optionsSearch = SpreadsheetApp
+    .getActiveSpreadsheet()
+    .getSheetByName('Options');
+  var queryOffsetStr = optionsSearch.getRange('F2').getValue();
+  var queryOffset = parseInt(queryOffsetStr, 10) || 0;
+
+  var threads = GmailApp.search(query, queryOffset, 500);//, 0, 999);
   var results = threads.map(thread => {
     let messages = thread.getMessages();
 

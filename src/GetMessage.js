@@ -8,5 +8,5 @@ function getPromptMessage() {
 }
 
 function getDefaultQuery() {
-  return 'is:unread';
+  return 'is:unread in:inbox';
 }

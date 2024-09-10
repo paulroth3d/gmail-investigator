@@ -38,3 +38,7 @@ function showPrompt() {
     ui.alert('You closed the dialog.');
   }
 }
+
+function getOptions() {
+  
+}

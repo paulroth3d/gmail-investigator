@@ -9,14 +9,18 @@ function parseSender(senderStr) {
   var splitMatch = cleanStr.match(/<([^>]+)>/);
   var results = ['', '', ''];
 
+  let splitName = '';
+  let splitEmail = senderStr;
+
   if (splitMatch) {
-    let splitName = cleanStr.split('<').shift();
-    let splitEmail = splitMatch[1];
-    let splitDomain = (splitEmail || '')
-      .split('@').pop();
-    
-    results = [splitName, splitEmail, splitDomain]
-      .map(s => s.trim());
+    splitName = cleanStr.split('<').shift();
+    splitEmail = splitMatch[1];
   }
+  let splitDomain = (splitEmail || '')
+    .split('@').pop();
+  
+  results = [splitName, splitEmail, splitDomain]
+    .map(s => s.trim());
+
   return results;
 }
