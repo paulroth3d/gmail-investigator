@@ -1,18 +1,44 @@
 
-function writeLatestSearch(str) {
+function getOptionsSettings() {
   var optionsSearch = SpreadsheetApp
     .getActiveSpreadsheet()
     .getSheetByName('Options');
   
-  var resultsRange = optionsSearch.getRange('B2');
-  resultsRange.setValue(str);
+  var resultsRange = optionsSearch.getRange('D1:G2').getValues();
+  var optionsMap = new Map(transpose(resultsRange));
+  return optionsMap;
+}
+
+function setOptionsSettings(optionsMap) {
+  optionsMap.set('Query Offset', optionsMap.get('Page Size') * optionsMap.get('Page Offset'));
+
+  var mapResults = [...optionsMap.entries()];
+  var mapResultsTransposed = transpose(mapResults);
+
+  var optionsSearch = SpreadsheetApp
+    .getActiveSpreadsheet()
+    .getSheetByName('Options');
+
+  optionsSearch.getRange('D1:G2').setValues(mapResultsTransposed);
+}
+
+function clearAllResults() {
+  var resultsSheet = SpreadsheetApp
+    .getActiveSpreadsheet()
+    .getSheetByName('results');
+
+  //resultsSheet.appendRow(cleanValues);
+  var resultsRange = resultsSheet.getRange('C2:M');
+  resultsRange.clearContent();
 }
 
 /**
  * Writes the results to the results sheet.
  * @param {String[][]} valuesToPush - values to write
+ * @param {Number} pageOffset - which page we are currently on
+ * @param {Number} pageSize - how many rows per page
  */
-function writeToResults(valuesToPush) {
+function writeToResults(valuesToPush, pageOffset, pageSize) {
   var cleanValues = valuesToPush && valuesToPush.length > 0
     ? valuesToPush
     : [['A man', 'a Plan', 'Panama']];
@@ -21,17 +47,15 @@ function writeToResults(valuesToPush) {
     .getActiveSpreadsheet()
     .getSheetByName('results');
 
-  //resultsSheet.appendRow(cleanValues);
-  var resultsRange = resultsSheet.getRange('C2:M');
-  resultsRange.clearContent();
+  var resultsRange = resultsSheet.getRange('C2');
 
-  resultsRange = resultsSheet.getRange('C2');
-
-  var firstRow = valuesToPush[0];
+  var firstRow = cleanValues[0];
   var width = firstRow.length;
-  var height = valuesToPush.length;
+  var height = cleanValues.length;
 
-  resultsRange = resultsRange.offset(0, 0, height, width);
+  var rowOffset = pageOffset * pageSize;
+
+  resultsRange = resultsRange.offset(rowOffset, 0, height, width);
   //resultsRange = resultsSheet.getRange(`C2:M${valuesToPush.length + 1}`);
 
   resultsRange.setValues(cleanValues);

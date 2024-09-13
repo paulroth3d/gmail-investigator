@@ -2,8 +2,44 @@
 function onOpen() {
   SpreadsheetApp.getUi() // Or DocumentApp or SlidesApp or FormApp.
       .createMenu('Gmail Explorer')
-      .addItem('Fetch Mail', 'fetchMail')
+      .addItem('Fetch Query', 'fetchMail')
+      .addItem('Fetch Next', 'fetchNext')
+      .addSeparator()
+      .addItem('Clear', 'clearAndReset')
+      //.addItem('Increment Page', 'incrementPage')
+      //.addItem('Test Alert', 'showAlert')
       .addToUi();
+}
+
+function clearAndReset() {
+  var optionSettings = getOptionsSettings();
+  optionSettings.set('Page Offset', 0);
+  setOptionsSettings(optionSettings);
+
+  clearAllResults();
+}
+
+function showAlert() {
+  var optionSettings = getOptionsSettings();
+  var optionsEntries = [...optionSettings.entries()];
+  SpreadsheetApp.getUi().alert('OptionsMap:' + JSON.stringify(optionsEntries));
+}
+
+/**
+ * Fetches the list of mail items
+ */
+function fetchMail() {
+  promptGmail();
+}
+
+function fetchNext() {
+  retrieveNext();
+}
+
+function incrementPage() {
+  var optionSettings = getOptionsSettings();
+  optionSettings.set('Page Offset', optionSettings.get('Page Offset') + 1);
+  setOptionsSettings(optionSettings);
 }
 
 /*
@@ -37,8 +73,4 @@ function showPrompt() {
     // User clicked X in the title bar.
     ui.alert('You closed the dialog.');
   }
-}
-
-function getOptions() {
-  
 }
