@@ -48,6 +48,7 @@ function queryGmail(query) {
     let senderName = senderList[0];
     let senderEmail = senderList[1];
     let senderDomain = senderList[2];
+    let senderMainDomain = senderList[3];
     
     return [
       thread.getId(),
@@ -58,6 +59,7 @@ function queryGmail(query) {
       senderName,
       senderEmail,
       senderDomain,
+      senderMainDomain,
       lastMessage.getReplyTo(),
       thread.getMessageCount(),
       thread.getLabels().map(label => label.getName())

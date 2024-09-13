@@ -8,6 +8,7 @@ function parseSender(senderStr) {
   var cleanStr = senderStr || '';
   var splitMatch = cleanStr.match(/<([^>]+)>/);
   var results = ['', '', ''];
+  var findDomain = (str) => str.split('.').slice(-2).join('.');
 
   let splitName = '';
   let splitEmail = senderStr;
@@ -19,7 +20,9 @@ function parseSender(senderStr) {
   let splitDomain = (splitEmail || '')
     .split('@').pop();
   
-  results = [splitName, splitEmail, splitDomain]
+  let mainDomain = (splitDomain || '').split('.').slice(-2).join('.');
+  
+  results = [splitName, splitEmail, splitDomain, mainDomain]
     .map(s => s.trim());
 
   return results;

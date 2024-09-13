@@ -28,7 +28,7 @@ function clearAllResults() {
     .getSheetByName('results');
 
   //resultsSheet.appendRow(cleanValues);
-  var resultsRange = resultsSheet.getRange('C2:M');
+  var resultsRange = resultsSheet.getRange('C2:N');
   resultsRange.clearContent();
 }
 
